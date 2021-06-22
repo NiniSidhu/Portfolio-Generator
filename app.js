@@ -1,11 +1,9 @@
 // // var commandLinesArgs = process.argv; Process is a global object that has information of where everything was executed. Argv is a property of process that holds exactly what was typed into the command line upon execution so that we can capture that data and use it in the app. 
 // // console.log(commandLinesArgs);
 
-  const profileDataArgs = process.argv.slice(2, process.argv.length);
 //   const name = profileDataArgs[0];
 //   const github = profileDataArgs[1];
 
-const [name, github] = profileDataArgs;
 // // // console.log(profileDataArgs);
 
 // // // const animalArray = ['dog', 'cat', 'pig'];
@@ -85,24 +83,14 @@ const [name, github] = profileDataArgs;
 // console.log(generatePage(name, github));
 
 //Making the HTML string: 
+const fs = require('fs');
+const generatePage = require('./src/page-template.js');
+const profileDataArgs = process.argv.slice(2);
+const [name, github] = profileDataArgs;
 
-const generatePage = (name, github) => {
-    return `
-    <!DOCTYPE html> 
-    <html lang="en"> 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <title>Portfolio Demo</title>
-        </head>
 
-        <body>
-            <h1>${name}</h1>
-            <h2><a href="https://github.com/${github}">Github</a></h2>
-        </body>
-    </html>
-    `; 
-};
+fs.writeFile('./index.html', generatePage(name, github), err =>{
+    if (err) throw new Error (err); 
 
-console.log(generatePage(name, github));
+    console.log('Portfolio Complete! Check out index.html to see the output')
+});
