@@ -100,12 +100,30 @@ const promptUser = () =>{
     {
         type: 'input',
         name: 'name', 
-        message: 'What is your name?'
+        message: 'What is your name? (Required)',
+        //We want to validate answers and alert user if no answer is provided. nameInput is an arbitrary function. In real, it is only checking if there is infact a value inside the input. If yes, it will return true and if false, it will return an error. We use the validate: to validate things. 
+        validate: nameInput => {
+            if (nameInput){
+                return true; 
+            }else{
+                console.log('Please enter your name!');
+                return false; 
+            }
+        }
     },
     {
         type: 'input',
         name: 'github',
-        message: 'Enter your GitHub username'
+        message: 'Enter your GitHub username (Required)',
+        //Validating GitHub user name 
+        validate: gitHubName => {
+            if (gitHubName){
+                return true; 
+            }else{
+                console.log("Please enter your GitHub name");
+                return false; 
+            }
+        }
     },
     {
         type: 'input',
@@ -135,12 +153,30 @@ const promptProject = portfolioData => {
         {
             type: 'input',
             name: 'name',
-            message: 'What is the name of your project?'
+            message: 'What is the name of your project?(Required)',
+            //Validating Project name 
+            validate: projectName =>{
+                if (projectName){
+                    return true;
+                }else{
+                    console.log('Please enter your Project name!');
+                    return false; 
+                }
+            }
         },
         {
             type: 'input',
             name: 'description',
-            message: 'Provide a description of your project (Required)'
+            message: 'Provide a description of your project (Required)',
+            //Validating Project description 
+            validate: projectDescription =>{
+                if (projectDescription){
+                    return true; 
+                }else{
+                    console.log('Please enter a description for your project.');
+                    return false; 
+                }
+            }
         },
         {
             type: 'checkbox',
@@ -151,7 +187,16 @@ const promptProject = portfolioData => {
         {
             type: 'input',
             name: 'link',
-            message: 'Enter a GitHub link to your project. (Required)'
+            message: 'Enter a GitHub link to your project. (Required)',
+            //Validating Link provided for Github
+            validate: githubLink =>{
+                if (githubLink){
+                    return true; 
+                }else{
+                    console.log('Please provide the GitHub link for your project');
+                    return false; 
+                }
+            }
         },
         {
             type: 'confirm', //A confirm question is a Boolean that receives a yes or no (true or false). User is prompted y/N. Default is N. 
