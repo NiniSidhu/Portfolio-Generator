@@ -95,13 +95,92 @@ const inquirer = require('inquirer');
 //     console.log('Portfolio Complete! Check out index.html to see the output')
 // });
 
-inquirer.prompt([
+const promptUser = () =>{
+    return inquirer.prompt([
     {
         type: 'input',
         name: 'name', 
         message: 'What is your name?'
+    },
+    {
+        type: 'input',
+        name: 'github',
+        message: 'Enter your GitHub username'
+    },
+    {
+        type: 'input',
+        name: 'about',
+        message: 'Provide some information about yourself:'
     }
-])
-.then(answers => console.log(answers));
+]);
+};
+
+
+const promptProject = portfolioData => {
+    console.log(`
+    ========================
+    Add a new Project
+    ========================
+
+    `);
+
+     //Added a projects array inside promptProjects and intialized it as an empty array. But we only want it to initalize on the first pass only. 
+    //If there is no 'projects' array property, create one
+
+    if (!portfolioData.projects){
+        portfolioData.projects=[]; //Projects Array
+    }
+
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is the name of your project?'
+        },
+        {
+            type: 'input',
+            name: 'description',
+            message: 'Provide a description of your project (Required)'
+        },
+        {
+            type: 'checkbox',
+            name: 'languages',
+            message: 'What did you build this project with? (Check all that apply)',
+            choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node'] 
+        },
+        {
+            type: 'input',
+            name: 'link',
+            message: 'Enter a GitHub link to your project. (Required)'
+        },
+        {
+            type: 'confirm', //A confirm question is a Boolean that receives a yes or no (true or false). User is prompted y/N. Default is N. 
+            name: 'feature',
+            message: 'Would you like to feature this project?',
+            default: false
+        },
+        {
+            type: 'confirm',
+            name: 'confirmAddProject', //Called below; can be set true or false using the if statement below. 
+            message: 'Would you like to enter another project?',
+            default: false
+        }
+    ])
+    
+    .then(projectData =>{
+        portfolioData.projects.push(projectData); //We use the array method Push to place projectData from inquirer into the new projects array we created above. 
+        if (projectData.confirmAddProject){ //This is where we confirm if the user wants to enter more Projects. 
+            return promptProject(portfolioData); //If user wants to add more (TRUE) then return to promptProject function. 
+        }else{
+            return portfolioData; //If the user does not want to add more (FALSE) then return to portfolioData function. 
+        }
+    });
+};
+
+promptUser()
+    .then(promptProject)
+    .then(portfolioData =>{
+        console.log(portfolioData);
+    });
 
 
