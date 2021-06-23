@@ -125,10 +125,26 @@ const promptUser = () =>{
             }
         }
     },
+
+    //We want to ask the user to if they want to add an About Me section. We use the answer from that to pass the next query 
+    {
+        type: 'confirm', 
+        name: 'confirmAbout',
+        messgae: 'Would you like to enter some information about yourself for an "About Me" section?',
+        default: true //setting default answer to be Yes or TRUE. 
+    },
     {
         type: 'input',
         name: 'about',
-        message: 'Provide some information about yourself:'
+        message: 'Provide some information about yourself:',
+        //this will only initiate WHEN the user selects Yes or TRUE to the above..
+        when: ({confirmAbout}) => {
+            if (confirmAbout){
+                return true;
+            }else{
+                return false; 
+            }
+        }
     }
 ]);
 };
